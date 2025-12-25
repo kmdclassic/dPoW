@@ -34,13 +34,13 @@ curl --url "http://127.0.0.1:7776" --data "{\"agent\":\"iguana\",\"method\":\"ad
 
 # add coins
 ./coins/ltc_7776
-./coins/kmdcl_7776
+./coins/kmd_7776
 ./coins/pirate_7776
 
 sleep 10
 
 # dpow for KMD->LTC
-curl --url "http://127.0.0.1:7776" --data "{\"agent\":\"iguana\",\"method\":\"dpow\",\"symbol\":\"KMDCL\",\"pubkey\":\"$pubkey\"}"
+curl --url "http://127.0.0.1:7776" --data "{\"agent\":\"iguana\",\"method\":\"dpow\",\"symbol\":\"KMD\",\"pubkey\":\"$pubkey\"}"
 
 # dpow for PIRATE
 curl --url "http://127.0.0.1:7776" --data "{\"agent\":\"iguana\",\"method\":\"dpow\",\"symbol\":\"PIRATE\",\"pubkey\":\"$pubkey\"}"
