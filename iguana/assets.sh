@@ -12,13 +12,13 @@ case "$1" in
         if [ $[RANDOM % 20] == 1 ]; then
           gen=" -gen -genproclimit=1"
         fi
-        $komodo_binary $gen $args -pubkey=$pubkey -addnode=$seed_ip &
+        $kmdclassic_binary $gen $args -pubkey=$pubkey -addnode=$seed_ip &
         sleep ${delay:-20}
     done
   ;;
 
   all)
-    # Replaces komodo's ./fiat-cli
+    # Replaces kmdclassic's ./fiat-cli
     ./listassetchains | while read chain; do
       echo $chain
       $cli_binary --ac_name=$chain ${*:2}
@@ -26,7 +26,7 @@ case "$1" in
   ;;
 
   *)
-    # Replaces komodo's fiat and ac folder
+    # Replaces kmdclassic's fiat and ac folder
     $cli_binary --ac_name=${1^^} ${*:2}
   ;;
 
