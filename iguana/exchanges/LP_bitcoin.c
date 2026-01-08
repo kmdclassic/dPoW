@@ -35,6 +35,8 @@ const unsigned char ZCASH_SHIELDED_SPENDS_HASH_PERSONALIZATION[16] =
         {'Z','c','a','s','h','S','S','p','e','n','d','s','H','a','s','h'};
 const unsigned char ZCASH_SHIELDED_OUTPUTS_HASH_PERSONALIZATION[16] =
         {'Z','c','a','s','h','S','O','u','t','p','u','t','H','a','s','h'};
+const unsigned char ZCASH_SIG_HASH_DORMANCY_PERSONALIZATION[16] =
+        {'Z','c','a','s','h','S','i','g','H','a','s','h', '\x6e', '\x6d', '\x72', '\x64'};
 const unsigned char ZCASH_SIG_HASH_SAPLING_PERSONALIZATION[16] =
         {'Z','c','a','s','h','S','i','g','H','a','s','h', '\xBB', '\x09', '\xB8', '\x76'};
 const unsigned char ZCASH_SIG_HASH_OVERWINTER_PERSONALIZATION[16] =
@@ -3556,8 +3558,11 @@ bits256 bitcoin_sigtxid(char *symbol,uint8_t taddr,uint8_t pubtype,uint8_t p2sht
         len += iguana_rwnum(1,&for_sig_hash[len],sizeof(dest.vins[vini].sequence),&dest.vins[vini].sequence);
         unsigned const char *sig_hash_personal = ZCASH_SIG_HASH_OVERWINTER_PERSONALIZATION;
         if (version == 4) {
-            sig_hash_personal = ZCASH_SIG_HASH_SAPLING_PERSONALIZATION;
-        }
+            if ( strcmp(coin->symbol,"KMD") == 0 || strcmp(coin->symbol,"KMDCL") == 0 )
+                sig_hash_personal = ZCASH_SIG_HASH_DORMANCY_PERSONALIZATION;
+            else
+			    sig_hash_personal = ZCASH_SIG_HASH_SAPLING_PERSONALIZATION;
+		}
 
         crypto_generichash_blake2b_salt_personal(
                 sig_hash,
