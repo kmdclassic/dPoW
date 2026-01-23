@@ -893,6 +893,8 @@ STRING_AND_INT(dpow,fundnotaries,symbol,numblocks)
 
 extern char *Notaries_elected[65][2];
 
+#pragma clang optimize off
+__attribute__((optnone))
 cJSON *dpow_recvmasks(struct supernet_info *myinfo,struct dpow_info *dp,struct dpow_block *bp)
 {
     int32_t i; cJSON *retjson,*item; char hexstr[64];
@@ -901,6 +903,8 @@ cJSON *dpow_recvmasks(struct supernet_info *myinfo,struct dpow_info *dp,struct d
         return(retjson);
     for (i=0; i<bp->numnotaries; i++)
     {
+        if ( Notaries_elected[i][0] == 0 )
+            continue;
         item = cJSON_CreateObject();
         jaddstr(item,"notary",Notaries_elected[i][0]);
         jaddnum(item,"bestk",bp->notaries[i].bestk);
@@ -912,6 +916,7 @@ cJSON *dpow_recvmasks(struct supernet_info *myinfo,struct dpow_info *dp,struct d
     }
     return(retjson);
 }
+#pragma clang optimize on
 
 STRING_ARG(dpow,active,maskhex)
 {
